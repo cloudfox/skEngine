@@ -1,0 +1,7 @@
+﻿  LuaCppApi.cpp
+  Application.cpp
+  main.cpp
+  Renderer.cpp
+  Generating Code...
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+  SkEngine.vcxproj -> D:\11_Dev\01_projects\SkEngine\x64\Debug\SkEngine.exe

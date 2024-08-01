@@ -1,3 +1,10 @@
+/*!*****************************************************************************
+\file     vk_initializers.cpp
+\author   Steven Kugies
+\par      www.skugies.com
+\par      skugies.dev@gmail
+*******************************************************************************/
+
 #include "vk_initializers.h"
 
 //> init_cmd

@@ -1,3 +1,10 @@
+/*!*****************************************************************************
+\file     Renderer.cpp
+\author   Steven Kugies
+\par      www.skugies.com
+\par      skugies.dev@gmail
+*******************************************************************************/
+
 #include "Renderer.h"
 #include "GLFW/glfw3.h"
 
@@ -13,6 +20,8 @@ void Renderer::Init(RenderApiType api)
 {
   API_s = api;
 
+	//selecting the graphics library to use
+	//should be possible to switch while running but probably not worth the hassle
 	switch (API_s)
 	{
 	case RenderApiType::OpenGL:  
@@ -25,8 +34,6 @@ void Renderer::Init(RenderApiType api)
 	RendererAPI_s->Init();
 
 }
-
-
 
 void Renderer::Shutdown()
 {

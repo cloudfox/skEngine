@@ -1,3 +1,9 @@
+/*!*****************************************************************************
+\file     main.cpp
+\author   Steven Kugies
+\par      www.skugies.com
+\par      skugies.dev@gmail
+*******************************************************************************/
 #include <iostream>
 #include "Core/Application.h"
 

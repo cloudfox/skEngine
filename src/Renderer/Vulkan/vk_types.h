@@ -1,4 +1,11 @@
 #pragma once
+/*!*****************************************************************************
+\file     vk_types.h
+\author   Steven Kugies
+\par      www.skugies.com
+\par      skugies.dev@gmail
+*******************************************************************************/
+
 
 #include <memory>
 #include <optional>

@@ -1,4 +1,12 @@
 #pragma once
+/*!*****************************************************************************
+\file     Transform.h
+\author   Steven Kugies
+\par      www.skugies.com
+\par      skugies.dev@gmail
+*******************************************************************************/
+
+
 #include "glm/glm.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 

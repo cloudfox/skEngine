@@ -1,3 +1,11 @@
+/*!*****************************************************************************
+\file     OpenGLRenderer.cpp
+\author   Steven Kugies
+\par      www.skugies.com
+\par      skugies.dev@gmail
+*******************************************************************************/
+
+
 #include "OpenGLRenderer.h"
 #include "GLFW/glfw3.h"
 #include "../Renderer.h"

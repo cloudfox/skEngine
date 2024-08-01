@@ -1,4 +1,11 @@
 #pragma once 
+/*!*****************************************************************************
+\file     vk_images.h
+\author   Steven Kugies
+\par      www.skugies.com
+\par      skugies.dev@gmail
+*******************************************************************************/
+
 
 #include <vulkan/vulkan.h>
 

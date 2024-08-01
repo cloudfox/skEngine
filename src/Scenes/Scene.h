@@ -1,4 +1,12 @@
 #pragma once
+/*!*****************************************************************************
+\file     Scene.h
+\author   Steven Kugies
+\par      www.skugies.com
+\par      skugies.dev@gmail
+*******************************************************************************/
+
+
 #include "../Entity/EntityManager.h"
 
 

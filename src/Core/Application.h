@@ -1,9 +1,13 @@
 #pragma once
+/*!*****************************************************************************
+\file     Application.h
+\author   Steven Kugies
+\par      www.skugies.com
+\par      skugies.dev@gmail
+*******************************************************************************/
 
 
 #include "LuaCppApi.h"
-
-
 
 namespace Engine
 {

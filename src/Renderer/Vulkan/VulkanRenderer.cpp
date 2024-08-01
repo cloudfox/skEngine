@@ -1,3 +1,10 @@
+/*!*****************************************************************************
+\file     VulkanRenderer.cpp
+\author   Steven Kugies
+\par      www.skugies.com
+\par      skugies.dev@gmail
+*******************************************************************************/
+
 #include "VulkanRenderer.h"
 
 #include <chrono>

@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>D:\11_Dev\01_projects\SkEngine\x64\Debug\SkEngine.exe</FullPath>
+      <FullPath>D:\11_Dev\01_projects\skEngine\x64\Debug\SkEngine.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

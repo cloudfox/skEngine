@@ -1,4 +1,10 @@
 #pragma once
+/*!*****************************************************************************
+\file     Health.h
+\author   Steven Kugies
+\par      www.skugies.com
+\par      skugies.dev@gmail
+*******************************************************************************/
 
 
 struct Health {
@@ -8,20 +14,22 @@ struct Health {
 
 
   float Get() { return current; }
+
+  //Directly Set Value bypassing regular checks
   float Set(float value) { current = value; }
-  float Damage(float damage){ 
+
+  //Modify Health with bounds checks, 
+  // Note: armor/other calculations must be applied before this function is called
+  void Damage(float damage){ 
     current -= damage;
     if (current <= 0)
     {
       current = 0;
-      // trigger death event
+      //TODO: trigger death event
     }
     else if (current >= max)
       current = max;
-
   }
-
-
 
 private:
   float max;

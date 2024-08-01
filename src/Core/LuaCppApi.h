@@ -1,4 +1,11 @@
 #pragma once
+/*!*****************************************************************************
+\file     LuaCppApi.h
+\author   Steven Kugies
+\par      www.skugies.com
+\par      skugies.dev@gmail
+*******************************************************************************/
+
 
 #pragma warning(push, 0)
 #define SOL_ALL_SAFETIES_ON 1

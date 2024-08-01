@@ -1,4 +1,11 @@
 #pragma once
+/*!*****************************************************************************
+\file    Renderer.h
+\author  Steven Kugies
+\par     www.skugies.com
+\par     skugies.dev@gmail
+*******************************************************************************/
+
 
 #include "RenderConfig.h"
 #include "RendererAPI.h"
@@ -8,6 +15,8 @@
 #include <cstdint>
 #include <glm/vec4.hpp>
 
+
+//Acts as an abstraction layer to whatever graphics library is set at startup
 class Renderer
 {
 public:

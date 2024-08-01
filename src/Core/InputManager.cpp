@@ -1,3 +1,10 @@
+/*!*****************************************************************************
+\file     InputManager.cpp
+\author   Steven Kugies
+\par      www.skugies.com
+\par      skugies.dev@gmail
+*******************************************************************************/
+
 #include "InputManager.h"
 
 #include "../Renderer/Renderer.h"

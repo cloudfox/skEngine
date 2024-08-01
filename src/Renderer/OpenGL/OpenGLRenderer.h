@@ -1,4 +1,11 @@
 #pragma once
+/*!*****************************************************************************
+\file     OpenGlRenderer.h
+\author   Steven Kugies
+\par      www.skugies.com
+\par      skugies.dev@gmail
+*******************************************************************************/
+
 #include "..\RendererAPI.h"
 
 

@@ -1,3 +1,10 @@
+/*!*****************************************************************************
+\file     EntityManager.cpp
+\author   Steven Kugies
+\par      www.skugies.com
+\par      skugies.dev@gmail
+*******************************************************************************/
+
 #include "EntityManager.h"
 
 #include "Entity.h"

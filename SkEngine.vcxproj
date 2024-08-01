@@ -168,7 +168,6 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Renderer\OpenGL\OpenGLRenderer.cpp" />
     <ClCompile Include="src\Renderer\Renderer.cpp" />
-    <ClCompile Include="src\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Renderer\Shader.cpp" />
     <ClCompile Include="src\Scenes\Scene.cpp" />
   </ItemGroup>

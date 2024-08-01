@@ -1,4 +1,11 @@
 #pragma once
+/*!*****************************************************************************
+\file     EntityManager.h
+\author   Steven Kugies
+\par      www.skugies.com
+\par      skugies.dev@gmail
+*******************************************************************************/
+
 #include "entt/entt.hpp"
 //#include "Entity.h"
 

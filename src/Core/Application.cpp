@@ -1,3 +1,10 @@
+/*!*****************************************************************************
+\file     Application.cpp
+\author   Steven Kugies
+\par      www.skugies.com
+\par      skugies.dev@gmail
+*******************************************************************************/
+
 #include "Application.h"
 #include <chrono>
 

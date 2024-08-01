@@ -1,5 +1,12 @@
 #pragma once
- 
+/*!*****************************************************************************
+\file     InputManager.h
+\author   Steven Kugies
+\par      www.skugies.com
+\par      skugies.dev@gmail
+*******************************************************************************/
+
+
 #include <map>
 #include <queue>
 

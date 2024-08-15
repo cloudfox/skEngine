@@ -34,6 +34,7 @@ public:
   static void Draw();
   //static void DrawLines();
 
+  static void SetAlpha(double a) { alpha_ = a; }
 
 private:
   static RenderApiType API_s;  //enum for what graphics api are we using
@@ -41,8 +42,11 @@ private:
   
   static glm::vec4 ClearColor_s;
 
+  static double alpha_;
+
 public:
   static GLFWwindow* Window_s;
   
+
 };
 

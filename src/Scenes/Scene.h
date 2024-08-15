@@ -20,6 +20,8 @@ public:
   void LoadScene();
   void SaveScene();
 
+  //void LoadSubScene();  //Loads another scenes entities inside thise scene
+
 private:
   std::string SceneName_;
   EntityManager EntityManager_;

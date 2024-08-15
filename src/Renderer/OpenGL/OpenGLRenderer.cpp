@@ -29,9 +29,6 @@ int OpenGLRenderer::Init()
     return -1;
   }
 
-
-  glfwMakeContextCurrent(Renderer::Window_s);
-
   return 0;
 }
 

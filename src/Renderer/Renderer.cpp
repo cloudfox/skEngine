@@ -7,10 +7,12 @@
 
 #include "Renderer.h"
 #include "GLFW/glfw3.h"
+#include <iostream>
 
 #include "OpenGL/OpenGLRenderer.h"
 //#include "Vulkan/VulkanRenderer.h"
-glm::vec4 Renderer::ClearColor_s{ 0.30f, 0.3f, 0.3f, 1.0f };
+glm::vec4 Renderer::ClearColor_s{ 0.50f, 0.5f, 0.5f, 1.0f };
+double Renderer::alpha_{ 0 };
 
 std::unique_ptr<RendererAPI> Renderer::RendererAPI_s;
 RenderApiType Renderer::API_s = RenderApiType::OpenGL;
@@ -51,9 +53,10 @@ void Renderer::OnWindowResize(uint32_t width, uint32_t height)
 
 void Renderer::Clear()
 {
+	glfwMakeContextCurrent(Window_s);
 	glClearColor(ClearColor_s.r, ClearColor_s.g, ClearColor_s.b, ClearColor_s.a);
 	//glClearDepth(1);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void Renderer::Draw()

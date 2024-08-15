@@ -6,6 +6,8 @@
 \par      skugies.dev@gmail
 *******************************************************************************/
 
+#include <chrono>
+#include <thread>
 
 #include "LuaCppApi.h"
 
@@ -30,9 +32,8 @@ namespace Engine
   class  Application
   {
   public:
-    Application();
-    ~Application();
-
+    Application() = default;
+    ~Application() = default;
 
     int Init(CmdLineArgs CmdArgs);
     int Shutdown();
@@ -45,18 +46,32 @@ namespace Engine
     //void LoadScene(Scene& scene);
 
   private:
-    bool isRunning_ = false;
     void LoadConfig();
     CmdLineArgs CmdLineArgs_;
     
+    double time;
     double Timestep_ = 0.02;
+    int frameCap_ = 255;
+    std::chrono::steady_clock::time_point currentTime_;
+    double accumulator;
+    
+    unsigned int OldFrame_ = 0;
+    unsigned int CurrentFrame_ = 1;
+    unsigned int SimFrame_ = 2;
+
+    std::vector<std::thread> threads_;
+    
+
     void FixedUpdate();
     void Update(double dt);
 
+
+    void SimulationThread();
+    void SimulationSync();
+
+    void RenderThread();
+    bool RenderSync();
   };
 
 
-
 }//end engine namespace
-
-

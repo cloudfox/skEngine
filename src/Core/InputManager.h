@@ -9,7 +9,7 @@
 
 #include <map>
 #include <queue>
-
+#include "../Utilities/SPSCQueue.h"
 
 class Command {
   //action name
@@ -44,17 +44,21 @@ class InputManager
 public:
   static void Init();
   static void HandleInput();
+  static void SyncInput();
 
 private:
   static std::vector<Command> Commands_s;
 
   static std::map<unsigned short, KeyState> KeyStates_s;
+  static std::map<unsigned short, KeyState> GameKeyStates_s;
   static std::multimap<unsigned short, Command*> CommandMap_s[KeyState::Size];
-
-  static std::queue<KeyInfo> InputQueue_;
-  // static std::queue<unsigned int, KeyState> CommandQueue;
+  
+  //static std::queue<KeyInfo> InputQueue_s;
+  static rigtorp::SPSCQueue<KeyInfo> InputQueue_s;
 
 private:
+  static bool AddToQueue(KeyInfo k);
+
   static void LoadCommandBindings();
   static void LoadDefaultCommandBindings();
   static void SaveBindings();

@@ -184,6 +184,7 @@ namespace Engine
 
       //Actual rendering starts here
       Renderer::Draw();
+      
 
       //Check if Render needs to sync with Simulation thread
       RenderSync();
@@ -198,7 +199,10 @@ namespace Engine
     //release to check if simulation thread is done
     SimRenderSync.release();
 
-    std::this_thread::sleep_for(std::chrono::microseconds(1));
+
+    //hendle input here as a way to give sim a chance to acquire
+    InputManager::HandleInput();
+
 
     if (SimRenderSync.try_acquire())
     {

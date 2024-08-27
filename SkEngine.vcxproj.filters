@@ -101,6 +101,9 @@
     <ClInclude Include="src\Core\LuaCppApi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Utilities\TSCircularQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="lua54.dll" />

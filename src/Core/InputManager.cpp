@@ -12,8 +12,9 @@
 std::vector<Command> InputManager::Commands_s;
 
 std::map<unsigned short, KeyState> InputManager::KeyStates_s;
+std::map<unsigned short, KeyState> InputManager::GameKeyStates_s;
 std::multimap<unsigned short, Command*> InputManager::CommandMap_s[KeyState::Size];
-std::queue<KeyInfo> InputManager::InputQueue_;
+rigtorp::SPSCQueue<KeyInfo> InputManager::InputQueue_s(100);
 
 void InputManager::Init()
 {
@@ -47,8 +48,11 @@ void InputManager::HandleInput()
     const int GLFWState = glfwGetKey(Renderer::Window_s, key);
     const int keyDown = (KeyStates_s[key] == KeyState::eDown) + (KeyStates_s[key] == KeyState::ePressed);
 
-    //Sets key state to either up, pressed, down, released
-    KeyStates_s[key] = KeyState(keyDown + (GLFWState == GLFW_PRESS) + (2 * (GLFWState == GLFW_RELEASE)));
+    //determine new key state to either up, pressed, down, released
+    KeyState state = KeyState(keyDown + (GLFWState == GLFW_PRESS) + (2 * (GLFWState == GLFW_RELEASE)));
+
+    //if keystate has changed add relevant commands to queue
+    (state == KeyStates_s[key] || AddToQueue(KeyInfo(key, state)) );
   }
 
   //function keys
@@ -57,16 +61,37 @@ void InputManager::HandleInput()
     const int GLFWState = glfwGetKey(Renderer::Window_s, key);
     const int keyDown = (KeyStates_s[key] == KeyState::eDown) + (KeyStates_s[key] == KeyState::ePressed);
 
-    //Sets key state to either up, pressed, down, released
-    KeyStates_s[key] = KeyState(keyDown + (GLFWState == GLFW_PRESS) + (2 * (GLFWState == GLFW_RELEASE)));
-  }
+    //determine new key state to either up, pressed, down, released
+    KeyState state = KeyState(keyDown + (GLFWState == GLFW_PRESS) + (2 * (GLFWState == GLFW_RELEASE)));
 
-  //If pressed/down/release, Run Associated Commands.
-  // TODO:  move commands to queue for processing in game Update()
-  for (const auto& [key, value] : KeyStates_s) {
-    auto it = CommandMap_s[value].equal_range(key);
-    for (auto itr = it.first; itr != it.second; ++itr)
-      itr->second->perform();
+    //if keystate has changed add relevant commands to queue
+    (state == KeyStates_s[key] || AddToQueue(KeyInfo(key, state)));
+  }
+}
+
+bool InputManager::AddToQueue(KeyInfo k)
+{
+  InputQueue_s.push(k);
+  return true;
+}
+
+void InputManager::SyncInput()
+{
+  KeyInfo* k = InputQueue_s.front();
+  while (k != nullptr)
+  {
+    if (GameKeyStates_s[k->key] != k->state)
+    {
+      //If pressed/down/release, Run Associated Commands.
+      auto it = CommandMap_s[k->state].equal_range(GameKeyStates_s[k->key]);
+      for (auto itr = it.first; itr != it.second; ++itr)
+        itr->second->perform();
+    }
+
+    GameKeyStates_s[k->key] = k->state;
+
+    InputQueue_s.pop();
+    k = InputQueue_s.front();
   }
 }
 
@@ -89,4 +114,5 @@ void InputManager::LoadDefaultCommandBindings()
 void InputManager::SaveBindings()
 {
 }
+
 

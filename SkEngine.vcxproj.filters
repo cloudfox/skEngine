@@ -48,6 +48,9 @@
     <ClCompile Include="src\Core\LuaCppApi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Renderer\OpenGL\glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Application.h">
@@ -101,11 +104,13 @@
     <ClInclude Include="src\Core\LuaCppApi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utilities\TSCircularQueue.h">
+    <ClInclude Include="src\Utilities\SPSCQueue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="lua54.dll" />
+    <None Include="assets\shaders\Shader.vert" />
+    <None Include="assets\shaders\Shader.frag" />
   </ItemGroup>
 </Project>

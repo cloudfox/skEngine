@@ -8,6 +8,9 @@
 
 #include <chrono>
 #include <thread>
+#include <semaphore>
+#include <condition_variable>
+#include <mutex>
 
 #include "LuaCppApi.h"
 
@@ -60,7 +63,9 @@ namespace Engine
     unsigned int SimFrame_ = 2;
 
     std::vector<std::thread> threads_;
+    //std::counting_semaphore<1> ThreadInits_;
     
+    bool InitDone = false;
 
     void FixedUpdate();
     void Update(double dt);

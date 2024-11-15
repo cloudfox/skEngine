@@ -7,9 +7,15 @@
 
 
 #include "OpenGLRenderer.h"
+
+#include <glad/glad.h>
 #include "GLFW/glfw3.h"
 #include "../Renderer.h"
+
 #include <iostream>
+
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 int OpenGLRenderer::Init()
 {
@@ -28,6 +34,15 @@ int OpenGLRenderer::Init()
     glfwTerminate();
     return -1;
   }
+  glfwMakeContextCurrent(Renderer::Window_s);
+  glfwSetFramebufferSizeCallback(Renderer::Window_s, framebuffer_size_callback);
+
+  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+  {
+    std::cout << "Failed to initialize GLAD" << std::endl;
+    return -1;
+  }
+
 
   return 0;
 }
@@ -38,4 +53,11 @@ void OpenGLRenderer::Clear()
 
 void OpenGLRenderer::Shutdown()
 {
+}
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+  // make sure the viewport matches the new window dimensions; note that width and 
+  // height will be significantly larger than specified on retina displays.
+  glViewport(0, 0, width, height);
 }

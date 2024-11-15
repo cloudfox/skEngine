@@ -13,8 +13,9 @@
 
 namespace Engine
 {
-  std::counting_semaphore<1> TimeSync(1);
-  std::counting_semaphore<1> SimRenderSync(1);
+  std::binary_semaphore TimeSync(1); //used for sync between render and simulation threads
+  std::binary_semaphore SimRenderSync(1); //used for sync between render and simulation threads
+  std::atomic<int> threadInitCounter(0); //increments while a thread is initializing, decrement when done
 
   struct AppConfig {
     int screenWidth;
@@ -41,7 +42,17 @@ namespace Engine
     CmdLineArgs_ = CmdArgs;
     LoadConfig();
 
-    Renderer::Init(RenderApiType::OpenGL);
+    //add threads
+    threadInitCounter++;
+    threads_.emplace_back(std::thread(&Application::SimulationThread, this));
+    threadInitCounter++;
+    threads_.emplace_back(std::thread(&Application::RenderThread, this));
+    
+
+
+    while (!threads_.empty())
+      threads_.front().join();
+    
     InputManager::Init();
     LuaAPI_.Init();
 
@@ -93,11 +104,7 @@ namespace Engine
     //Simulation Thread
     //Render Thread
     
-    threads_.push_back(std::thread(&Application::SimulationThread, this));
-    threads_.push_back(std::thread(&Application::RenderThread, this));
 
-    while (!threads_.empty())
-      threads_.front().join();
 
     return 0;
   }
@@ -119,6 +126,17 @@ namespace Engine
 
   void Application::SimulationThread()
   {  
+    //Simulation Init
+    // nothing else needed here at this time
+    threadInitCounter--; //place init before this line
+
+    std::cout << "wait for init\n";
+    //Wait for all threads to finish Init before starting simulation
+    threadInitCounter.wait(true);
+
+    std::cout << "sim start\n";
+    //----------------------------------------------------
+    //Simulation Start
 
     time = 0;  //How long the engine has been running
 
@@ -157,17 +175,23 @@ namespace Engine
     CurrentFrame_ = SimFrame_;
     SimFrame_ = (SimFrame_ + 1) % 2;
 
-
     //wait for RenderSync
     SimRenderSync.release();
     std::this_thread::sleep_for(std::chrono::microseconds(1));
   }
 
   void Application::RenderThread()
-  {
+  {  
+    
+    std::cout << "render init start\n";
+
+    Renderer::Init(RenderApiType::OpenGL);
     //Sets this thread as the one GLFW runs and updates from
     glfwMakeContextCurrent(Renderer::Window_s);
 
+    std::cout << "render init finished\n";
+    threadInitCounter--; //place init before this line
+    threadInitCounter.notify_one();
 
     while (!glfwWindowShouldClose(Renderer::Window_s))
     {
@@ -191,18 +215,16 @@ namespace Engine
     }
   }
 
+
   // Checks if it needs to wait for Simulation Thread to switch to new targets
-  //
   // return: true when sync thread has finished a loop, otherwise false
   bool Application::RenderSync()
   {
     //release to check if simulation thread is done
     SimRenderSync.release();
 
-
     //hendle input here as a way to give sim a chance to acquire
     InputManager::HandleInput();
-
 
     if (SimRenderSync.try_acquire())
     {
@@ -214,6 +236,5 @@ namespace Engine
       return true; //return true to reset accumulation
     }
   }
-
 
 }//end engine namespace

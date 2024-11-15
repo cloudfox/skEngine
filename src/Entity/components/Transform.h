@@ -17,15 +17,15 @@ struct Transform
 {
 	Transform() = default;
 	Transform(const Transform&) = default;
-	Transform(const glm::vec3& pos)	: position(pos) {}
+	Transform(const glm::vec3& pos) : position() { position[0] = pos; }
 
-	glm::vec3 position = { 0.0f, 0.0f, 0.0f };
-	glm::vec3 rotation = { 0.0f, 0.0f, 0.0f };
-	glm::vec3 scale = { 1.0f, 1.0f, 1.0f };
+	glm::vec3 position[3] = { {0.0f, 0.0f, 0.0f},{0.0f, 0.0f, 0.0f},{0.0f, 0.0f, 0.0f} };
+	glm::vec3 rotation[3] = { {0.0f, 0.0f, 0.0f},{0.0f, 0.0f, 0.0f},{0.0f, 0.0f, 0.0f} };
+	glm::vec3 scale[3] = { {0.0f, 0.0f, 0.0f},{0.0f, 0.0f, 0.0f},{0.0f, 0.0f, 0.0f} };
 
-	glm::mat4 GetTransformMatrix() const
+	glm::mat4 GetTransformMatrix(int i) const
 	{
-		glm::mat4 rotation = glm::toMat4(glm::quat(rotation));
-		return glm::translate(glm::mat4(1.0f), position) * rotation * glm::scale(glm::mat4(1.0f), scale);
+		glm::mat4 r = glm::toMat4(glm::quat(rotation[i]));
+		return glm::translate(glm::mat4(1.0f), position[i]) * r * glm::scale(glm::mat4(1.0f), scale[i]);
 	}
 };

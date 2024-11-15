@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Renderer\OpenGL\glad.c" />
     <ClCompile Include="src\Core\LuaCppApi.cpp" />
     <ClCompile Include="src\Core\Application.cpp" />
     <ClCompile Include="src\Core\AssetManager.cpp" />
@@ -189,8 +190,11 @@
     <ClInclude Include="src\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Renderer\Shader.h" />
     <ClInclude Include="src\Scenes\Scene.h" />
+    <ClInclude Include="src\Utilities\SPSCQueue.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\shaders\Shader.frag" />
+    <None Include="assets\shaders\Shader.vert" />
     <None Include="lua54.dll" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

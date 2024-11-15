@@ -11,16 +11,16 @@
 #include "../Renderer/Renderer.h"
 #include "InputManager.h"
 
+
+//TODO replace std::cout with debug logging library
+
+
 namespace Engine
 {
   std::binary_semaphore TimeSync(1); //used for sync between render and simulation threads
   std::binary_semaphore SimRenderSync(1); //used for sync between render and simulation threads
   std::atomic<int> threadInitCounter(0); //increments while a thread is initializing, decrement when done
 
-  struct AppConfig {
-    int screenWidth;
-    int screenHeight;
-  };
 
   //given a point in time return how much time has passed since then
   inline float GetFixedDeltaTime(std::chrono::steady_clock::time_point& current)
@@ -42,29 +42,44 @@ namespace Engine
     CmdLineArgs_ = CmdArgs;
     LoadConfig();
 
-    //add threads
+    //add threads; increment counter before each, decrement at end of threads init
     threadInitCounter++;
     threads_.emplace_back(std::thread(&Application::SimulationThread, this));
     threadInitCounter++;
     threads_.emplace_back(std::thread(&Application::RenderThread, this));
-    
 
-
-    while (!threads_.empty())
-      threads_.front().join();
-    
     InputManager::Init();
-    LuaAPI_.Init();
+    LuaAPI_.Init(); 
+
+
+
 
     return 0;
   }
 
   void Application::LoadConfig()
   {
+    //check if config file exists
+    if (true)
+    {
+
+    }
+    //load defaults
+    else {
+
+      //save config file to drive
+    }
+
+    //Check if CmdLineArgs has any overrides
+
   }
 
   int Application::Shutdown()
   {
+    while (!threads_.empty())
+      threads_.front().join();
+
+
     Renderer::Shutdown();
     return 0;
   }
@@ -150,6 +165,9 @@ namespace Engine
     //---------
     while (!glfwWindowShouldClose(Renderer::Window_s))
     {
+      if (InputManager::KeyStatus(65) == KeyState::eDown)
+        std::cout << "keydown\n";
+     
       TimeSync.acquire();
       accumulator += GetFixedDeltaTime(currentTime_);
       TimeSync.release();
@@ -182,19 +200,20 @@ namespace Engine
 
   void Application::RenderThread()
   {  
-    
     std::cout << "render init start\n";
 
     Renderer::Init(RenderApiType::OpenGL);
     //Sets this thread as the one GLFW runs and updates from
     glfwMakeContextCurrent(Renderer::Window_s);
 
-    std::cout << "render init finished\n";
+    
     threadInitCounter--; //place init before this line
     threadInitCounter.notify_one();
+    std::cout << "render init finished\n";
 
     while (!glfwWindowShouldClose(Renderer::Window_s))
     {
+      InputManager::HandleInput();
       //Get how long the current Simulation frame has been running
       //as a percentage to the next frame
       TimeSync.acquire();
@@ -208,7 +227,6 @@ namespace Engine
 
       //Actual rendering starts here
       Renderer::Draw();
-      
 
       //Check if Render needs to sync with Simulation thread
       RenderSync();

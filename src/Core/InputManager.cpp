@@ -27,7 +27,6 @@ void InputManager::Init()
   //function keys
   for (int key = GLFW_KEY_ESCAPE; key < GLFW_KEY_LAST; key++)
     KeyStates_s[key] = KeyState(glfwGetKey(Renderer::Window_s, key));
-
 }
 
 //Records the current GLFW key states
@@ -49,7 +48,7 @@ void InputManager::HandleInput()
     const int keyDown = (KeyStates_s[key] == KeyState::eDown) + (KeyStates_s[key] == KeyState::ePressed);
 
     //determine new key state to either up, pressed, down, released
-    KeyState state = KeyState(keyDown + (GLFWState == GLFW_PRESS) + (2 * (GLFWState == GLFW_RELEASE)));
+    KeyState state = KeyState(keyDown + (GLFWState == GLFW_PRESS) + (2 * (GLFWState == GLFW_RELEASE && GLFWState != KeyState::eUp)));
 
     //if keystate has changed add relevant commands to queue
     (state == KeyStates_s[key] || AddToQueue(KeyInfo(key, state)) );
@@ -62,16 +61,17 @@ void InputManager::HandleInput()
     const int keyDown = (KeyStates_s[key] == KeyState::eDown) + (KeyStates_s[key] == KeyState::ePressed);
 
     //determine new key state to either up, pressed, down, released
-    KeyState state = KeyState(keyDown + (GLFWState == GLFW_PRESS) + (2 * (GLFWState == GLFW_RELEASE)));
+    KeyState state = KeyState(keyDown + (GLFWState == GLFW_PRESS) + (2 * (GLFWState == GLFW_RELEASE && GLFWState != KeyState::eUp))); 
 
     //if keystate has changed add relevant commands to queue
     (state == KeyStates_s[key] || AddToQueue(KeyInfo(key, state)));
   }
+
 }
 
 bool InputManager::AddToQueue(KeyInfo k)
 {
-  InputQueue_s.push(k);
+  InputQueue_s.push(k); 
   return true;
 }
 
@@ -93,6 +93,11 @@ void InputManager::SyncInput()
     InputQueue_s.pop();
     k = InputQueue_s.front();
   }
+}
+
+KeyState InputManager::KeyStatus(unsigned short key)
+{
+  return KeyStates_s.at(key);
 }
 
 

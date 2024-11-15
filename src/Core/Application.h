@@ -32,6 +32,13 @@ namespace Engine
   };
 
 
+  struct AppConfig {
+    int screenWidth{ 1280 };
+    int screenHeight{ 720 };
+    bool limitFrameRate{ false };
+    unsigned int frameRateCap{ 60 };
+  };
+
   class  Application
   {
   public:
@@ -51,10 +58,10 @@ namespace Engine
   private:
     void LoadConfig();
     CmdLineArgs CmdLineArgs_;
+    AppConfig appConfig_;
     
     double time;
     double Timestep_ = 0.02;
-    int frameCap_ = 255;
     std::chrono::steady_clock::time_point currentTime_;
     double accumulator;
     

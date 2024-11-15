@@ -46,6 +46,7 @@ public:
   static void HandleInput();
   static void SyncInput();
 
+  static KeyState KeyStatus(unsigned short key);
 private:
   static std::vector<Command> Commands_s;
 

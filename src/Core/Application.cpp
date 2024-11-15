@@ -165,7 +165,9 @@ namespace Engine
     //---------
     while (!glfwWindowShouldClose(Renderer::Window_s))
     {
-      if (InputManager::KeyStatus(65) == KeyState::eDown)
+      InputManager::SyncInput();
+
+      if (InputManager::KeyStatus(GLFW_KEY_SPACE) == KeyState::ePressed)
         std::cout << "keydown\n";
      
       TimeSync.acquire();

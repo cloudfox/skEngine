@@ -11,6 +11,8 @@
 #include <queue>
 #include "../Utilities/SPSCQueue.h"
 
+namespace Engine {
+
 class Command {
   //action name
   //type: pressed/held/released
@@ -50,8 +52,8 @@ public:
 private:
   static std::vector<Command> Commands_s;
 
-  static std::map<unsigned short, KeyState> KeyStates_s;
-  static std::map<unsigned short, KeyState> GameKeyStates_s;
+  static std::map<unsigned short, KeyState> KeyStates_s; //for use by render thread
+  static std::map<unsigned short, KeyState> GameKeyStates_s; //for use by game/sim threads
   static std::multimap<unsigned short, Command*> CommandMap_s[KeyState::Size];
   
   //static std::queue<KeyInfo> InputQueue_s;
@@ -63,6 +65,8 @@ private:
   static void LoadCommandBindings();
   static void LoadDefaultCommandBindings();
   static void SaveBindings();
-  
 
 };
+
+
+}

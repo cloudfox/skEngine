@@ -181,6 +181,7 @@
     <ClInclude Include="src\Entity\components\Collider.h" />
     <ClInclude Include="src\Entity\components\ComponentsList.h" />
     <ClInclude Include="src\Entity\components\Health.h" />
+    <ClInclude Include="src\Entity\components\mesh.h" />
     <ClInclude Include="src\Entity\Entity.h" />
     <ClInclude Include="src\Entity\EntityManager.h" />
     <ClInclude Include="src\Entity\components\Transform.h" />

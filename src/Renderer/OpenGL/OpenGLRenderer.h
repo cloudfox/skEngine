@@ -8,17 +8,20 @@
 
 #include "..\RendererAPI.h"
 
+namespace Engine {
 
-class OpenGLRenderer :    public RendererAPI
-{
-public:
-  virtual int Init() override;
-  virtual void Clear() override;
-  virtual void Shutdown() override;
+  class OpenGLRenderer :    public RendererAPI
+  {
+  public:
+    virtual int Init() override;
+    virtual void Clear() override;
+    virtual void Shutdown() override;
 
-private:
+  private:
 
 
 
-};
+  };
 
+
+}

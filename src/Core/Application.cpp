@@ -19,8 +19,12 @@ namespace Engine
 {
   std::binary_semaphore TimeSync(1); //used for sync between render and simulation threads
   std::binary_semaphore SimRenderSync(1); //used for sync between render and simulation threads
-  std::atomic<int> threadInitCounter(0); //increments while a thread is initializing, decrement when done
+  std::binary_semaphore InitSyncMain(0);
+  std::binary_semaphore InitSyncRenderer(0);
 
+  unsigned int Application::OldFrame_ = 0;
+  unsigned int Application::CurrentFrame_ = 1;
+  unsigned int Application::SimFrame_ = 2;
 
   //given a point in time return how much time has passed since then
   inline float GetFixedDeltaTime(std::chrono::steady_clock::time_point& current)
@@ -42,17 +46,16 @@ namespace Engine
     CmdLineArgs_ = CmdArgs;
     LoadConfig();
 
-    //add threads; increment counter before each, decrement at end of threads init
-    threadInitCounter++;
     threads_.emplace_back(std::thread(&Application::SimulationThread, this));
-    threadInitCounter++;
     threads_.emplace_back(std::thread(&Application::RenderThread, this));
 
     InputManager::Init();
     LuaAPI_.Init(); 
-
-
-
+    EntityManager::Init();
+    
+    //Signal that initialization is complete in main thread
+    InitSyncMain.release();
+    printf("main init done \n");
 
     return 0;
   }
@@ -76,9 +79,9 @@ namespace Engine
 
   int Application::Shutdown()
   {
+    //TODO: Make sure all threads recieve shutdown signal
     while (!threads_.empty())
       threads_.front().join();
-
 
     Renderer::Shutdown();
     return 0;
@@ -138,16 +141,16 @@ namespace Engine
     //Video
     Renderer::Draw();
   }
+  std::mutex mtx; 
+  std::condition_variable cv; 
+
+
 
   void Application::SimulationThread()
   {  
-    //Simulation Init
-    // nothing else needed here at this time
-    threadInitCounter--; //place init before this line
-
-    std::cout << "wait for init\n";
-    //Wait for all threads to finish Init before starting simulation
-    threadInitCounter.wait(true);
+    // Wait for other threads to finish initialization
+    InitSyncMain.acquire();  // Block until the RenderThread signals 
+    InitSyncRenderer.acquire();  // Block until RenderThread signals
 
     std::cout << "sim start\n";
     //----------------------------------------------------
@@ -166,9 +169,6 @@ namespace Engine
     while (!glfwWindowShouldClose(Renderer::Window_s))
     {
       InputManager::SyncInput();
-
-      if (InputManager::KeyStatus(GLFW_KEY_SPACE) == KeyState::ePressed)
-        std::cout << "keydown\n";
      
       TimeSync.acquire();
       accumulator += GetFixedDeltaTime(currentTime_);
@@ -205,12 +205,12 @@ namespace Engine
     std::cout << "render init start\n";
 
     Renderer::Init(RenderApiType::OpenGL);
+
     //Sets this thread as the one GLFW runs and updates from
     glfwMakeContextCurrent(Renderer::Window_s);
 
-    
-    threadInitCounter--; //place init before this line
-    threadInitCounter.notify_one();
+    // Signal that the RenderThread initialization is done
+    InitSyncRenderer.release(); 
     std::cout << "render init finished\n";
 
     while (!glfwWindowShouldClose(Renderer::Window_s))

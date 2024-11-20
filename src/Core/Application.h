@@ -12,6 +12,7 @@
 #include <condition_variable>
 #include <mutex>
 
+#include "../Entity/EntityManager.h"
 #include "LuaCppApi.h"
 
 namespace Engine
@@ -52,8 +53,13 @@ namespace Engine
 
   public:
     LuaCppApi LuaAPI_;
+    
 
     //void LoadScene(Scene& scene);
+
+    static unsigned int OldFrame_;
+    static unsigned int CurrentFrame_;
+    static unsigned int SimFrame_;
 
   private:
     void LoadConfig();
@@ -65,9 +71,7 @@ namespace Engine
     std::chrono::steady_clock::time_point currentTime_;
     double accumulator;
     
-    unsigned int OldFrame_ = 0;
-    unsigned int CurrentFrame_ = 1;
-    unsigned int SimFrame_ = 2;
+
 
     std::vector<std::thread> threads_;
     //std::counting_semaphore<1> ThreadInits_;
@@ -77,7 +81,7 @@ namespace Engine
     void FixedUpdate();
     void Update(double dt);
 
-
+    void waitForInit();
     void SimulationThread();
     void SimulationSync();
 

@@ -6,7 +6,35 @@
 #include <sstream>
 #include <iostream>
 
-Shader::Shader(const char* vertexPath, const char* fragmentPath)
+Shader::Shader()
+{}
+
+void Shader::checkCompileErrors(unsigned int shader, std::string type)
+{
+  int success;
+  char infoLog[1024];
+  if (type != "PROGRAM")
+  {
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+    if (!success)
+    {
+      glGetShaderInfoLog(shader, 1024, NULL, infoLog);
+      std::cout << "ERROR::SHADER_COMPILATION_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
+    }
+  }
+  else
+  {
+    glGetProgramiv(shader, GL_LINK_STATUS, &success);
+    if (!success)
+    {
+      glGetProgramInfoLog(shader, 1024, NULL, infoLog);
+      std::cout << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
+    }
+  }
+}
+
+
+void Shader::load(const char* vertexPath, const char* fragmentPath)
 {
   std::string vertexCode;
   std::string fragmentCode;
@@ -60,32 +88,7 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
   glDeleteShader(fragment);
 }
 
-void Shader::checkCompileErrors(unsigned int shader, std::string type)
-{
-  int success;
-  char infoLog[1024];
-  if (type != "PROGRAM")
-  {
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-      glGetShaderInfoLog(shader, 1024, NULL, infoLog);
-      std::cout << "ERROR::SHADER_COMPILATION_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
-    }
-  }
-  else
-  {
-    glGetProgramiv(shader, GL_LINK_STATUS, &success);
-    if (!success)
-    {
-      glGetProgramInfoLog(shader, 1024, NULL, infoLog);
-      std::cout << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
-    }
-  }
-}
-
-
-void Shader::Use()
+void Shader::use()
 {
   glUseProgram(ID_);
 }
@@ -108,5 +111,10 @@ void Shader::SetInt(const std::string& name, int value) const
 void Shader::SetFloat(const std::string& name, float value) const
 {
   glUniform1f(glGetUniformLocation(ID_, name.c_str()), value);
+}
+
+void Shader::SetVec3(const std::string& name, const glm::vec3& value) const
+{
+  glUniform3fv(glGetUniformLocation(ID_, name.c_str()),1, &value[0]);
 }
 

@@ -11,11 +11,19 @@
 #include "components/ComponentsList.h"
 
 
-entt::registry EntityManager::Registry_;
+entt::registry EntityManager::Registry_s;
+std::vector<entt::entity> EntityManager::entities_s;
+
+void EntityManager::Init()
+{
+  entities_s.push_back(Registry_s.create());
+  Registry_s.emplace<Transform>(entities_s.front(), Transform());
+  Registry_s.emplace<Mesh>(entities_s.front(), Mesh());
+}
 
 Entity EntityManager::CreateEntity()
 {
-  Entity entity = { Registry_.create() };
+  Entity entity = { Registry_s.create() };
 
 
   return entity;
@@ -23,7 +31,7 @@ Entity EntityManager::CreateEntity()
 
 void EntityManager::DestroyEntity(Entity entity)
 {
-  Registry_.destroy(entity);
+  Registry_s.destroy(entity);
 }
 
 

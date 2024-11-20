@@ -9,6 +9,8 @@
 
 #include "../Renderer/Renderer.h"
 
+namespace Engine {
+
 std::vector<Command> InputManager::Commands_s;
 
 std::map<unsigned short, KeyState> InputManager::KeyStates_s;
@@ -56,11 +58,8 @@ void InputManager::HandleInput()
     //determine new key state to either up, pressed, down, released
     KeyState state = KeyState(keyDown + (GLFWState == GLFW_PRESS) + (2 * (GLFWState == GLFW_RELEASE && (KeyStates_s[key] != KeyState::eUp && KeyStates_s[key] != KeyState::eReleased))));
 
-
-
     //if keystate has changed add relevant commands to queue
     (state == KeyStates_s[key] || AddToQueue(KeyInfo(key, state)) );
-    KeyStates_s[key] = state;
   }
 
   //function keys
@@ -75,11 +74,11 @@ void InputManager::HandleInput()
     //if keystate has changed add relevant commands to queue
     (state == KeyStates_s[key] || AddToQueue(KeyInfo(key, state)));
   }
-
 }
 
 bool InputManager::AddToQueue(KeyInfo k)
 {
+  KeyStates_s[k.key] = k.state;
   InputQueue_s.push(k); 
   return true;
 }
@@ -104,6 +103,7 @@ void InputManager::SyncInput()
   }
 }
 
+//Mostly for testing
 KeyState InputManager::KeyStatus(unsigned short key)
 {
   return GameKeyStates_s.at(key);
@@ -130,3 +130,5 @@ void InputManager::SaveBindings()
 }
 
 
+
+}

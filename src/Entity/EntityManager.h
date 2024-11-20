@@ -14,6 +14,7 @@ class Entity;
 class EntityManager
 {
 public:
+  static void Init();
   static Entity CreateEntity();
   static void DestroyEntity(Entity entity);
 
@@ -24,8 +25,11 @@ public:
   //  return component;
   //}
 
+  
 
-private:
-  static entt::registry Registry_;
+  static entt::registry Registry_s;
+
+  static std::vector<entt::entity> entities_s;
+
 };
 

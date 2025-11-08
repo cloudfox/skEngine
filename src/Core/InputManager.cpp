@@ -15,7 +15,7 @@ std::vector<Command> InputManager::Commands_s;
 
 std::map<unsigned short, KeyState> InputManager::KeyStates_s;
 std::map<unsigned short, KeyState> InputManager::GameKeyStates_s;
-std::multimap<unsigned short, Command*> InputManager::CommandMap_s[KeyState::Size];
+std::multimap<unsigned short, Command*> InputManager::CommandMap_s[4];
 rigtorp::SPSCQueue<KeyInfo> InputManager::InputQueue_s(100);
 
 void InputManager::Init()

@@ -24,11 +24,11 @@ public:
   bool operator==(const Entity& other) const  {    return EnttHandle == other.EnttHandle;  }
   bool operator!=(const Entity& other) const  {    return !(*this == other);  }
 
-  template<typename T, typename... Args>
-  T& AddComponent(Args&&... args)
-  {
-    return EntityManager::AddComponent<T>(*this, T);
-  }
+  //template<typename T, typename... Args>
+  //T& AddComponent(Args&&... args)
+  //{
+  //  return EntityManager::AddComponent<T>(*this, T);
+  //}
 
 
   //{

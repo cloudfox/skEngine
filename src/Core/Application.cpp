@@ -79,9 +79,14 @@ namespace Engine
 
   int Application::Shutdown()
   {
+    
+
     //TODO: Make sure all threads recieve shutdown signal
     while (!threads_.empty())
-      threads_.front().join();
+    {
+      threads_.back().join();
+      threads_.pop_back();
+    }
 
     Renderer::Shutdown();
     return 0;

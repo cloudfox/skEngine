@@ -31,7 +31,6 @@ enum KeyState {
   ePressed = 1,
   eDown = 2,
   eReleased = 3,
-  Size = 4
 };
 
 struct KeyInfo {
@@ -54,7 +53,7 @@ private:
 
   static std::map<unsigned short, KeyState> KeyStates_s; //for use by render thread
   static std::map<unsigned short, KeyState> GameKeyStates_s; //for use by game/sim threads
-  static std::multimap<unsigned short, Command*> CommandMap_s[KeyState::Size];
+  static std::multimap<unsigned short, Command*> CommandMap_s[4];
   
   //static std::queue<KeyInfo> InputQueue_s;
   static rigtorp::SPSCQueue<KeyInfo> InputQueue_s;

@@ -39,12 +39,17 @@ operator|(const Type lhs, const Type rhs) noexcept {
     return static_cast<Type>(static_cast<std::underlying_type_t<Type>>(lhs) | static_cast<std::underlying_type_t<Type>>(rhs));
 }
 
+#pragma warning( push )
+#pragma warning( suppress : 26827)
+
 /*! @copydoc operator| */
 template<typename Type>
 [[nodiscard]] constexpr std::enable_if_t<entt::enum_as_bitmask_v<Type>, Type>
 operator&(const Type lhs, const Type rhs) noexcept {
     return static_cast<Type>(static_cast<std::underlying_type_t<Type>>(lhs) & static_cast<std::underlying_type_t<Type>>(rhs));
 }
+
+#pragma warning( pop ) 
 
 /*! @copydoc operator| */
 template<typename Type>

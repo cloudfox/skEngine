@@ -159,10 +159,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Entity\components\mesh.cpp" />
     <ClCompile Include="src\Renderer\OpenGL\glad.c" />
     <ClCompile Include="src\Core\LuaCppApi.cpp" />
     <ClCompile Include="src\Core\Application.cpp" />
-    <ClCompile Include="src\Core\AssetManager.cpp" />
     <ClCompile Include="src\Core\InputManager.cpp" />
     <ClCompile Include="src\Entity\Entity.cpp" />
     <ClCompile Include="src\Entity\EntityManager.cpp" />
@@ -176,7 +176,6 @@
     <ClInclude Include="include\tiny_obj_loader.h" />
     <ClInclude Include="src\Core\LuaCppApi.h" />
     <ClInclude Include="src\Core\Application.h" />
-    <ClInclude Include="src\Core\AssetManager.h" />
     <ClInclude Include="src\Core\InputManager.h" />
     <ClInclude Include="src\Entity\components\Collider.h" />
     <ClInclude Include="src\Entity\components\ComponentsList.h" />

@@ -15,6 +15,7 @@
 #include "../Entity/EntityManager.h"
 #include "LuaCppApi.h"
 
+
 namespace Engine
 {
   //class Scene;
@@ -81,12 +82,17 @@ namespace Engine
     void FixedUpdate();
     void Update(double dt);
 
-    void waitForInit();
+    //void waitForInit(); remove?
     void SimulationThread();
     void SimulationSync();
 
     void RenderThread();
     bool RenderSync();
+
+
+  private:
+ 
+
   };
 
 

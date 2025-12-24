@@ -12,10 +12,15 @@
 //#include "Vulkan/VulkanRenderer.h"
 #include "../Core/Application.h"
 #include "../Entity/EntityManager.h"
-#include "../Entity/components/Transform.h"
-#include "../Entity/components/mesh.h"
+
+#include "../Entity/components/ComponentsList.h"
+//#include "../Entity/components/Transform.h"
+//#include "../Entity/components/mesh.h"
 
 #include "glm/gtx/scalar_multiplication.hpp"
+
+#include "entt/entt.hpp"
+
 
 
 namespace Engine{
@@ -68,26 +73,26 @@ void Renderer::Init(RenderApiType api)
 	shaders_s.resize(1);
 	shaders_s[0].load("assets/shaders/Shader.vert", "assets/shaders/Shader.frag");
 
+	//drawing a triangle
+	//indices = {
+	//			0, 1, 3, // first triangle
+	//			1, 2, 3  // second triangle
+	//};
 
-	indices = {
-				0, 1, 3, // first triangle
-				1, 2, 3  // second triangle
-	};
+	//glGenVertexArrays(1, &VAO);
+	//glGenBuffers(1, &VBO);
+	//// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+	//glBindVertexArray(VAO);
 
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-	glBindVertexArray(VAO);
+	//glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	// position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-	// color attribute
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
+	//// position attribute
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	//glEnableVertexAttribArray(0);
+	//// color attribute
+	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	//glEnableVertexAttribArray(1);
 
 }
 
@@ -115,24 +120,61 @@ void Renderer::Clear()
 
 void Renderer::Draw()
 {
+	Clear();
+	glm::vec3 color = glm::vec3(0.5, 0.0, 0.0);
+
 	auto view = EntityManager::Registry_s.view<Transform,const Mesh>();
 
 	for (auto [entity, transform, mesh] : view.each()) {
 		glm::vec3 pos = (1 - alpha_) * transform.position[Application::CurrentFrame_]
 										  + (alpha_) * transform.position[Application::SimFrame_];
 		pos.x += 1;
+
+		Renderer::shaders_s[0].use();
+		glBindVertexArray(VAO);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+
+
 	}
-
-	glm::vec3 color = glm::vec3(0.5, 0.0, 0.0);
-	Clear();
-//	Renderer::shaders_s[0].SetVec3("aColor", color);
-	Renderer::shaders_s[0].use();
-	glBindVertexArray(VAO);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
-
 
 	glfwSwapBuffers(Window_s);
 }
 
+void Renderer::BindVertexData(Mesh& mesh)
+{  
 
-}
+
+	//	const int numIndices = mesh.indices.size();
+	//	const int numVerts = mesh.verts.size();
+	//
+	//	glGenVertexArrays(1, &mesh.VAO);
+	//	glBindVertexArray(mesh.VAO);
+	//
+	//	glGenBuffers(1, &mesh.VBO);
+	//	glBindBuffer(GL_ARRAY_BUFFER, mesh.VBO);
+	//	/*  Copy vertex attributes to GPU */
+	//	glBufferData(GL_ARRAY_BUFFER,
+	//		numIndices * numVerts, &mesh.verts[0],
+	//		GL_STATIC_DRAW);
+	//
+	//	glGenBuffers(1, &mesh.IBO);
+	//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.IBO);
+	//	/*  Copy vertex indices to GPU */
+	//	glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+	//		numIndices * indices.size(), &mesh.indices[0],
+	//		GL_STATIC_DRAW);
+	//
+	//	/*  Send vertex attributes to shaders */
+	//	for (int i = 0; i < numAttribs; ++i)
+	//	{
+	//		glEnableVertexAttribArray(vLayout[i].location);
+	//		glVertexAttribPointer(vLayout[i].location, vLayout[i].size, vLayout[i].type,
+	//			vLayout[i].normalized, vertexSize, reinterpret_cast<const void*>(static_cast<intptr_t>(vLayout[i].offset)));
+	//	}
+
+  }
+
+
+
+
+}  //end of engine namespace

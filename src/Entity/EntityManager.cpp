@@ -10,15 +10,28 @@
 #include "Entity.h"
 #include "components/ComponentsList.h"
 
-
 entt::registry EntityManager::Registry_s;
 std::vector<entt::entity> EntityManager::entities_s;
+Mesh* sphere;
 
 void EntityManager::Init()
 {
   entities_s.push_back(Registry_s.create());
   Registry_s.emplace<Transform>(entities_s.front(), Transform());
   Registry_s.emplace<Mesh>(entities_s.front(), Mesh());
+
+  sphere = CreateSphereMesh(5);
+  Entity sphereEntity = CreateEntity();
+
+
+  //Registry_s.emplace<Mesh>(entities_s.front(), sphere);
+  Mesh& component = Registry_s.emplace_or_replace<Mesh>(sphereEntity, *sphere);
+}
+
+void EntityManager::Shutdown()
+{
+  delete sphere;
+
 }
 
 Entity EntityManager::CreateEntity()

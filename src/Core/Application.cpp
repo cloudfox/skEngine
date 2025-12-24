@@ -11,8 +11,7 @@
 #include "../Renderer/Renderer.h"
 #include "InputManager.h"
 
-
-//TODO replace std::cout with debug logging library
+//TODO: replace std::cout with debug logging library
 
 
 namespace Engine
@@ -79,9 +78,6 @@ namespace Engine
 
   int Application::Shutdown()
   {
-    
-
-    //TODO: Make sure all threads recieve shutdown signal
     while (!threads_.empty())
     {
       threads_.back().join();
@@ -89,17 +85,21 @@ namespace Engine
     }
 
     Renderer::Shutdown();
+
+    EntityManager::Shutdown();
+
     return 0;
   }
 
   int Application::Run()
   {
+
+    // DEPRECIATED
     //double time = 0;  //How long the engine has been running
 
     //auto currentTime = std::chrono::steady_clock::now();
     //double accumulator = Timestep_;   //tracks time since last FixedUpdate
 
-    ////TODO How would I multithread this?
     //while (!glfwWindowShouldClose(Renderer::Window_s))
     //{
     //  accumulator += GetFixedDeltaTime(currentTime);
@@ -229,7 +229,7 @@ namespace Engine
       Renderer::SetAlpha(duration.count() / Timestep_);
       TimeSync.release();
 
-      //TODO Framerate Cap
+      // TODO: Framerate Cap
 
 
       //Actual rendering starts here

@@ -20,6 +20,8 @@
 
 #include "Shader.h"
 
+class Mesh;
+
 namespace Engine {
 
 
@@ -56,6 +58,11 @@ namespace Engine {
     static GLFWwindow* Window_s;
 
     static std::vector<Shader> shaders_s;
+
+
+  private:
+    void BindVertexData(Mesh& mesh);
+
   };
 
 }

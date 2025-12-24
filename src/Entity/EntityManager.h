@@ -10,11 +10,14 @@
 //#include "Entity.h"
 
 class Entity;
+struct mesh;
 
 class EntityManager
 {
 public:
   static void Init();
+  static void Shutdown();
+
   static Entity CreateEntity();
   static void DestroyEntity(Entity entity);
 
@@ -30,6 +33,8 @@ public:
   static entt::registry Registry_s;
 
   static std::vector<entt::entity> entities_s;
+
+
 
 };
 

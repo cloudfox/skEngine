@@ -248,7 +248,7 @@ namespace Engine
     //release to check if simulation thread is done
     SimRenderSync.release();
 
-    //hendle input here as a way to give sim a chance to acquire
+    //handle input here as a way to give sim a chance to acquire
     InputManager::HandleInput();
 
     if (SimRenderSync.try_acquire())

@@ -13,3 +13,6 @@ Current ToDo list:
 
   
 
+
+I stopped actively working on this due to school and other projects I'm more interested in pursuing.
+Last thing I really did was split the rendering off into it's own thread.
